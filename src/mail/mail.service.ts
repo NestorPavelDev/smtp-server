@@ -36,6 +36,13 @@ export class MailService implements OnModuleInit, OnModuleDestroy {
   constructor(private readonly configService: ConfigService) {}
 
   async onModuleInit() {
+    if (!this.isEnabled()) {
+      this.logger.log(
+        "MailService disabled."
+      );
+      return;
+    }
+
     const watcherConfig = this.resolveConfig();
 
     await this.bootstrapSmtpTransport(watcherConfig);
@@ -229,5 +236,10 @@ export class MailService implements OnModuleInit, OnModuleDestroy {
       subject: `New email received from ${fromDisplay}`,
       text: `You have received a new email from ${fromDisplay} with the subject "${subject}".`,
     });
+  }
+
+  private isEnabled(): boolean {
+    const raw = this.configService.get<string>("MAIL_SERVICE_ENABLED");
+    return (raw ?? "").trim().toLowerCase() === "true";
   }
 }
