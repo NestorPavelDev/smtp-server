@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { ScheduleModule } from "@nestjs/schedule";
 import { MailModule } from "./mail/mail.module";
 
 @Module({
@@ -9,7 +8,6 @@ import { MailModule } from "./mail/mail.module";
       isGlobal: true,
       envFilePath: '.env',
     }),
-    ScheduleModule.forRoot(),
     MailModule,
   ],
 })

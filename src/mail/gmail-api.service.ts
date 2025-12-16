@@ -1,4 +1,10 @@
-import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { SchedulerRegistry } from "@nestjs/schedule";
 import { google, gmail_v1 } from "googleapis";
@@ -19,9 +25,7 @@ type GmailPollingConfig = {
 };
 
 @Injectable()
-export class GmailApiPollingService
-  implements OnModuleInit, OnModuleDestroy
-{
+export class GmailApiPollingService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(GmailApiPollingService.name);
   private gmail?: gmail_v1.Gmail;
   private config?: GmailPollingConfig;
@@ -30,7 +34,7 @@ export class GmailApiPollingService
   private readonly processedSet = new Set<string>();
 
   constructor(
-    private readonly configService: ConfigService,
+    @Inject(ConfigService) private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry
   ) {}
 

@@ -1,4 +1,5 @@
 import {
+  Inject,
   Injectable,
   Logger,
   OnModuleDestroy,
@@ -33,7 +34,9 @@ export class MailService implements OnModuleInit, OnModuleDestroy {
   private lastProcessedUid = 0;
   private processingMailbox = false;
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService
+  ) {}
 
   async onModuleInit() {
     if (!this.isEnabled()) {
